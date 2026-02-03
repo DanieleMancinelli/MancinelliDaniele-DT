@@ -65,4 +65,13 @@ export class AppComponent implements OnInit {
       }
     });
   }
+
+  changeStatus(id: number, newStatus: string) {
+    this.deliveryService.updateStatus(id, newStatus).subscribe({
+      next: () => {
+        this.loadDeliveries(); // Ricarica la lista per aggiornare i colori dei bordi
+      },
+      error: (err) => alert("Errore nel cambio stato")
+    });
+  }
 }

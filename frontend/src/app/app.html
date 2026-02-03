@@ -38,6 +38,14 @@
       <p><strong>Indirizzo:</strong> {{ d.address }}</p>
       <p><strong>Fascia Oraria:</strong> {{ d.time_slot }}</p>
       <div class="status-text">Stato: {{ d.status }}</div>
+
+      <!-- Sezione pulsanti cambio stato -->
+      <div class="actions">
+        <button (click)="changeStatus(d.id, 'READY')" class="btn-status grey" [disabled]="d.status === 'READY'">Ready</button>
+        <button (click)="changeStatus(d.id, 'OUT_FOR_DELIVERY')" class="btn-status blue" [disabled]="d.status === 'OUT_FOR_DELIVERY'">Out</button>
+        <button (click)="changeStatus(d.id, 'DELIVERED')" class="btn-status green" [disabled]="d.status === 'DELIVERED'">Delivered</button>
+        <button (click)="changeStatus(d.id, 'FAILED')" class="btn-status red" [disabled]="d.status === 'FAILED'">Failed</button>
+      </div>
     </div>
   </div>
 </div>

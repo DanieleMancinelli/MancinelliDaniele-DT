@@ -18,4 +18,8 @@ export class DeliveryService {
   addDelivery(delivery: any): Observable<any> {
     return this.http.post(this.apiUrl, delivery);
   }
+
+  updateStatus(id: number, status: string): Observable<any> {
+    return this.http.put(`${this.apiUrl}/${id}/status`, { status: status });
+  }
 }

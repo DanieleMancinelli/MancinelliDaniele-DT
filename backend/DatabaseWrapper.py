@@ -68,3 +68,8 @@ class DatabaseWrapper:
         """
         params = (tracking, recipient, address, time_slot, priority)
         self.execute_query(query, params)
+
+    def update_delivery_status(self, delivery_id, new_status):
+        query = "UPDATE deliveries SET status = %s WHERE id = %s"
+        params = (new_status, delivery_id)
+        self.execute_query(query, params)

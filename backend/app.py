@@ -43,6 +43,22 @@ def add_delivery():
             return jsonify({"error": "Il codice tracking esiste già"}), 409
         return jsonify({"error": str(e)}), 500
 
+@app.route('/deliveries/<int:delivery_id>/status', methods=['PUT'])
+def update_status(delivery_id):
+    data = request.json
+    new_status = data.get('status')
+    
+    # Validazione stati ammessi
+    valid_statuses = ['READY', 'OUT_FOR_DELIVERY', 'DELIVERED', 'FAILED']
+    if new_status not in valid_statuses:
+        return jsonify({"error": "Stato non valido"}), 400
+
+    try:
+        db.update_delivery_status(delivery_id, new_status)
+        return jsonify({"message": "Stato aggiornato correttamente"}), 200
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
 if __name__ == '__main__':
     # Avviamo sulla porta 5000
     app.run(host='0.0.0.0', port=5000, debug=True)
