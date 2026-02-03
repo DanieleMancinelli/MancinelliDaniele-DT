@@ -12,6 +12,15 @@ import { DeliveryService } from './services/delivery';
 })
 export class AppComponent implements OnInit {
   deliveries: any[] = [];
+  
+  // Modello per la nuova consegna
+  newDelivery = {
+    tracking_code: '',
+    recipient: '',
+    address: '',
+    time_slot: '',
+    priority: 'MEDIUM' // Valore di default
+  };
 
   constructor(
     private deliveryService: DeliveryService,
@@ -26,9 +35,34 @@ export class AppComponent implements OnInit {
     this.deliveryService.getDeliveries().subscribe({
       next: (data) => {
         this.deliveries = data;
-        this.cdr.detectChanges(); // Forza l'aggiornamento della vista
+        this.cdr.detectChanges();
       },
       error: (err) => console.error(err)
+    });
+  }
+
+  submitDelivery() {
+    // Validazione base
+    if (!this.newDelivery.tracking_code.trim() || !this.newDelivery.recipient.trim()) {
+      alert("Tracking e Destinatario sono obbligatori!");
+      return;
+    }
+
+    this.deliveryService.addDelivery(this.newDelivery).subscribe({
+      next: () => {
+        // Reset del form
+        this.newDelivery = {
+          tracking_code: '',
+          recipient: '',
+          address: '',
+          time_slot: '',
+          priority: 'MEDIUM'
+        };
+        this.loadDeliveries(); // Aggiorna la lista
+      },
+      error: (err) => {
+        alert(err.error.error || "Errore durante il salvataggio");
+      }
     });
   }
 }

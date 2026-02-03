@@ -1,12 +1,36 @@
 <div class="container">
   <h1>Delivery Tracker Dashboard</h1>
 
+  <!-- Sezione Form Nuova Consegna -->
+  <div class="form-container">
+    <h3>Registra Nuova Consegna</h3>
+    <div class="form-group">
+      <input [(ngModel)]="newDelivery.tracking_code" placeholder="Codice Tracking (univoco)">
+      <input [(ngModel)]="newDelivery.recipient" placeholder="Nome Destinatario">
+    </div>
+    <div class="form-group">
+      <input [(ngModel)]="newDelivery.address" placeholder="Indirizzo di consegna">
+      <input [(ngModel)]="newDelivery.time_slot" placeholder="Fascia Oraria (es. 14:00-16:00)">
+    </div>
+    <div class="form-group">
+      <label>Priorità: </label>
+      <select [(ngModel)]="newDelivery.priority">
+        <option value="LOW">LOW</option>
+        <option value="MEDIUM">MEDIUM</option>
+        <option value="HIGH">HIGH</option>
+      </select>
+      <button (click)="submitDelivery()" class="btn-add">Aggiungi Consegna</button>
+    </div>
+  </div>
+
+  <hr>
+
+  <h2>Lista Consegne</h2>
   <div class="grid">
     <div *ngFor="let d of deliveries" 
          class="card" 
          [ngClass]="d.status.toLowerCase()">
       
-      <!-- Badge Priorità (mostrato solo se HIGH) -->
       <div *ngIf="d.priority === 'HIGH'" class="priority-badge">HIGH PRIORITY</div>
 
       <h3>Codice: {{ d.tracking_code }}</h3>
@@ -16,6 +40,4 @@
       <div class="status-text">Stato: {{ d.status }}</div>
     </div>
   </div>
-
-  <p *ngIf="deliveries.length === 0" style="text-align: center;">Nessuna consegna trovata.</p>
 </div>
